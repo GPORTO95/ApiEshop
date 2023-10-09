@@ -2,6 +2,7 @@
 using Domain.Customers;
 using Domain.Orders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Persistence;
 
@@ -15,6 +16,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         throw new NotImplementedException();
     }
+
+    DatabaseFacade IApplicationDbContext.Database { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
