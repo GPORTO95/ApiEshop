@@ -1,31 +1,27 @@
 ﻿using Application.Data;
 using Domain.Customers;
 using Domain.Orders;
+using Domain.Products;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Persistence;
 
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
-    public DbSet<Customer> Customers { get; set; }
-
-    public DbSet<Order> Orders { get; set; }
-
-    public Task<int> SaveChancesAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    DatabaseFacade IApplicationDbContext.Database { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer();
-    }
+    public ApplicationDbContext(DbContextOptions options)
+        : base(options)
+    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
+
+    public DbSet<Customer> Customers { get; set; }
+
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<LineItem> LineItems { get; set; }
 }
