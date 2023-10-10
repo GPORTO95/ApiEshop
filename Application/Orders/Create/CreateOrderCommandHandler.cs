@@ -28,7 +28,7 @@ internal sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderCom
 
         _context.Orders.Add(order);
 
-        await _context.SaveChancesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         await _publisher.Publish(new OrderCreatedEvent(order.Id), cancellationToken);
     }

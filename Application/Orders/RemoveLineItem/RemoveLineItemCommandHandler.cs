@@ -25,6 +25,6 @@ internal sealed class RemoveLineItemCommandHandler : IRequestHandler<RemoveLineI
 
         order.RemoveLineItem(request.LineItemId);
 
-        await _context.SaveChancesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
