@@ -33,6 +33,8 @@ builder.Services.AddRebus(rebus => rebus
             await bus.Subscribe<OrderPaymentRequestSent>();
         });
 
+builder.Services.AutoRegisterHandlersFromAssemblyOf<ApplicationAssemblyReference>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
