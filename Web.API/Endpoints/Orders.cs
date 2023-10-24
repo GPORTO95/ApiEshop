@@ -1,10 +1,11 @@
 ﻿using Application.Orders.Create;
+using Application.Orders.GetOrderSummary;
 using Carter;
 using MediatR;
 
-namespace Web.API.Endpoints.Orders;
+namespace Web.API.Endpoints;
 
-public class Create : ICarterModule
+public class Orders : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
@@ -15,6 +16,13 @@ public class Create : ICarterModule
             await sender.Send(command);
 
             return Results.Ok();
+        });
+
+        app.MapGet("orders/{id}summary", async (Guid id, ISender sender) =>
+        {
+            var query = new GetOrderSummaryQuery(id);
+
+            return Results.Ok(await sender.Send(query));
         });
     }
 }
