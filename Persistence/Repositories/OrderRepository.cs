@@ -18,6 +18,11 @@ internal sealed class OrderRepository : IOrderRepository
             .SingleOrDefaultAsync(o => o.Id == id);
     }
 
+    public bool HasOneLineItem(Order order)
+    {
+        return _context.LineItems.Count(x => x.OrderId == order.Id) == 1;
+    }
+
     public void Add(Order order) 
     {
         _context.Orders.Add(order);

@@ -26,7 +26,7 @@ internal sealed class RemoveLineItemCommandHandler : IRequestHandler<RemoveLineI
         if (order is null)
             return;
 
-        order.RemoveLineItem(request.LineItemId);
+        order.RemoveLineItem(request.LineItemId, _orderRepository);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
