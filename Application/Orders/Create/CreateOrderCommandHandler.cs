@@ -2,22 +2,31 @@
 using Domain.Customers;
 using Domain.Orders;
 using MediatR;
-using Rebus.Bus;
 
 namespace Application.Orders.Create;
 
 internal sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly IOrderRepository _orderRepository;
+    private readonly IOrderSummaryRepository _orderSummaryRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateOrderCommandHandler(IApplicationDbContext context)
+    public CreateOrderCommandHandler(
+        ICustomerRepository customerRepository,
+        IOrderRepository orderRepository,
+        IOrderSummaryRepository orderSummaryRepository,
+        IUnitOfWork unitOfWork)
     {
-        _context = context;
+        _customerRepository = customerRepository;
+        _orderRepository = orderRepository;
+        _orderSummaryRepository = orderSummaryRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var customer = await _context.Customers.FindAsync(
+        var customer = await _customerRepository.GetByIdAsync(
             new CustomerId(request.CustomerId));
 
         if (customer is null)
@@ -25,10 +34,10 @@ internal sealed class CreateOrderCommandHandler : IRequestHandler<CreateOrderCom
 
         var order = Order.Create(customer.Id);
 
-        _context.Orders.Add(order);
+        _orderRepository.Add(order);
 
-        _context.OrderSummaries.Add(new OrderSummary(order.Id.Value, customer.Id.Value, 0));
+        _orderSummaryRepository.Add(new OrderSummary(order.Id.Value, customer.Id.Value, 0));
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

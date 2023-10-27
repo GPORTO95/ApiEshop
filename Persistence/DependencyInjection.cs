@@ -1,7 +1,10 @@
 ﻿using Application.Data;
+using Domain.Customers;
+using Domain.Orders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Repositories;
 
 namespace Persistence;
 
@@ -17,6 +20,12 @@ public static class DependencyInjection
 
         services.AddScoped<IApplicationDbContext>(sp =>
             sp.GetRequiredService<ApplicationDbContext>());
+
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
+
+        services.AddScoped<IOrderSummaryRepository, OrderSummaryRepository>();
 
         return services;
     }
