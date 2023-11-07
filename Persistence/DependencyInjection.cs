@@ -1,5 +1,6 @@
 ﻿using Application.Data;
 using Application.Orders;
+using Application.Orders.Create;
 using Application.Orders.GetOrderSummary;
 using Domain.Customers;
 using Domain.Orders;
@@ -39,6 +40,8 @@ public static class DependencyInjection
         services.AddScoped<IOrderReadService, OrderReadService>();
 
         services.AddScoped<IGetOrderSummary, GetOrderSummary>();
+
+        services.AddScoped<ICalculateOrderSummary, CalculateOrderSummary>();
 
         return services;
     }
