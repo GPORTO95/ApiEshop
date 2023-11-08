@@ -25,16 +25,16 @@ public sealed class UnitOfWorkBehavior<TRequest, TResponse>
             return await next();
         }
 
-        using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-        {
-            var response = await next();
+        using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+        var response = await next();
 
-            transactionScope.Complete();
-            
-            return response;
-        }
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        transactionScope.Complete();
+
+        return response;
+
     }
 
     private static bool IsNotCommand()

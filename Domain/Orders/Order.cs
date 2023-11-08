@@ -31,7 +31,7 @@ public class Order : Entity
         return order;
     }
 
-    public void Add(ProductId productId, Money price)
+    public void AddLineItem(ProductId productId, Money price)
     {
         var lineItem = new LineItem(
             new LineItemId(Guid.NewGuid()), 
@@ -40,18 +40,20 @@ public class Order : Entity
             price);
 
         _lineItems.Add(lineItem);
+
+        Raise(new LineItemAddedDomainEvent(Guid.NewGuid(), Id, lineItem.Id));
     }
 
-    public void RemoveLineItem(LineItemId lineItemId, IOrderRepository orderRepository)
+    public void RemoveLineItem(LineItemId lineItemId)
     {
-        if (orderRepository.HasOneLineItem(this))
+        if (HasOneLineItem())
         {
             return;
         }
 
         var lineItem = _lineItems.FirstOrDefault(li => li.Id == lineItemId);
 
-        if(lineItem is null)
+        if (lineItem is null)
         {
             return;
         }
@@ -60,4 +62,6 @@ public class Order : Entity
 
         Raise(new LineItemRemovedDomainEvent(Guid.NewGuid(), Id, lineItem.Id));
     }
+
+    private bool HasOneLineItem() => _lineItems.Count == 1;
 }
