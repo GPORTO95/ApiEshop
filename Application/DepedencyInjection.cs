@@ -1,4 +1,5 @@
 ﻿using Application.Behaviors;
+using FluentValidation;
 using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,8 @@ public static class DepedencyInjection
 
             config.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
         });
+
+        services.AddValidatorsFromAssembly(ApplicationAssemblyReference.Assembly);
 
         return services;
     }
