@@ -5,6 +5,7 @@ using Application.Orders.GetOrderSummary;
 using Domain.Customers;
 using Domain.Orders;
 using Domain.Products;
+using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +22,8 @@ public static class DependencyInjection
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options
-                .UseSqlServer(configuration.GetConnectionString("Database")));
+                .UseSqlServer(configuration.GetConnectionString("Database"))
+                .UseExceptionProcessor());
 
         services.AddScoped<IApplicationDbContext>(sp =>
             sp.GetRequiredService<ApplicationDbContext>());
