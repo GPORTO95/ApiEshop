@@ -1,6 +1,7 @@
 ﻿using Application.Produtcs.Create;
 using Application.Produtcs.Delete;
 using Application.Produtcs.Get;
+using Application.Produtcs.GetById;
 using Application.Produtcs.Update;
 using Carter;
 using Domain.Products;
@@ -13,6 +14,21 @@ public class Products : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
+        app.MapGet("products", async (
+            string? searchTerm,
+            string? sortColumn,
+            string? sortOrder,
+            int page,
+            int pageSize,
+            ISender sender) =>
+        {
+            var query = new GetProductsQuery(searchTerm, sortColumn, sortOrder, page, pageSize);
+
+            var products = await sender.Send(query);
+
+            return Results.Ok(products);
+        });
+
         app.MapGet("products/{id:guid}", async (Guid id, ISender sender) =>
         {
             try

@@ -3,7 +3,7 @@ using Domain.Products;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Produtcs.Get;
+namespace Application.Produtcs.GetById;
 
 internal sealed class GetProductQueryHandler
     : IRequestHandler<GetProductQuery, ProductResponse>
@@ -17,9 +17,8 @@ internal sealed class GetProductQueryHandler
 
     public async Task<ProductResponse> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
-        var product = await _context
-            .Products
-            .Where(p => p.Id == request.Id)
+        var product = await _context.Products
+            .Where(p => p.Id == request.ProductId)
             .Select(p => new ProductResponse(
                 p.Id.Value,
                 p.Name,
@@ -30,7 +29,7 @@ internal sealed class GetProductQueryHandler
 
         if (product is null)
         {
-            throw new ProductNotFoundException(request.Id);
+            throw new ProductNotFoundException(request.ProductId);
         }
 
         return product;

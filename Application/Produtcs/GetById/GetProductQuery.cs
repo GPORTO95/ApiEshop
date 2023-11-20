@@ -1,9 +1,9 @@
 ﻿using Domain.Products;
 using MediatR;
 
-namespace Application.Produtcs.Get;
+namespace Application.Produtcs.GetById;
 
-public record GetProductQuery(ProductId Id): IRequest<ProductResponse>;
+public record GetProductQuery(ProductId ProductId) : IRequest<ProductResponse>;
 
 public record ProductResponse(
     Guid Id,
