@@ -1,4 +1,5 @@
 using Application;
+using Application.Abstractions;
 using Application.Orders.Create;
 using Carter;
 using Microsoft.AspNetCore.RateLimiting;
@@ -6,6 +7,7 @@ using Persistence;
 using Rebus.Config;
 using Rebus.Routing.TypeBased;
 using Web.API.Extensions;
+using Web.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCarter();
+
+builder.Services.AddScoped<ILinkService, LinkService>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRateLimiter(rateLimiterOptions =>
 {

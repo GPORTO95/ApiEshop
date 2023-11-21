@@ -1,9 +1,8 @@
-﻿using Application.Data;
+﻿using Application.Abstractions;
+using Application.Data;
 using Application.Produtcs.GetById;
 using Domain.Products;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace Application.Produtcs.Get;
@@ -12,10 +11,12 @@ internal sealed class GetProductsQueryHandler
     : IRequestHandler<GetProductsQuery, PagedList<ProductResponse>>
 {
     private readonly IApplicationDbContext _context;
+    private readonly ILinkService _linkService;
 
-    public GetProductsQueryHandler(IApplicationDbContext context)
+    public GetProductsQueryHandler(IApplicationDbContext context, ILinkService linkService)
     {
         _context = context;
+        _linkService = linkService;
     }
 
     public async Task<PagedList<ProductResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
@@ -48,6 +49,8 @@ internal sealed class GetProductsQueryHandler
 
         var produtcs = await PagedList<ProductResponse>.CreateAsync(productsResponseQuery, request.Page, request.PageSize);
 
+        AddLinksForPagedProducts(request, produtcs);
+
         return produtcs;
     }
 
@@ -60,4 +63,55 @@ internal sealed class GetProductsQueryHandler
             "currency" => product => product.Price.Currency,
             _ => product => product.Id
         };
+
+    private void AddLinksForPagedProducts(GetProductsQuery query, PagedList<ProductResponse> products)
+    {
+        products.Links.Add(
+            _linkService.Generate(
+                "GetProducts",
+                new
+                {
+                    searchTerm = query.SearchTerm,
+                    sortColumn = query.SortColumn,
+                    sortOrder = query.SortOrder,
+                    page = query.Page,
+                    pageSize = query.PageSize
+                },
+                "self",
+                "GET"));
+
+        if (products.HasNextPage)
+        {
+            products.Links.Add(
+            _linkService.Generate(
+                "GetProducts",
+                new
+                {
+                    searchTerm = query.SearchTerm,
+                    sortColumn = query.SortColumn,
+                    sortOrder = query.SortOrder,
+                    page = query.Page + 1,
+                    pageSize = query.PageSize
+                },
+                "next-page",
+                "GET"));
+        }
+
+        if (products.HasPreviousPage)
+        {
+            products.Links.Add(
+            _linkService.Generate(
+                "GetProducts",
+                new
+                {
+                    searchTerm = query.SearchTerm,
+                    sortColumn = query.SortColumn,
+                    sortOrder = query.SortOrder,
+                    page = query.Page - 1,
+                    pageSize = query.PageSize
+                },
+                "previous-page",
+                "GET"));
+        }
+    }
 }
