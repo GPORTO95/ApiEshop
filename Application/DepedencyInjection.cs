@@ -16,6 +16,8 @@ public static class DepedencyInjection
             config.NotificationPublisher = new TaskWhenAllPublisher();
 
             config.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
+
+            config.AddOpenBehavior(typeof(IdempotentCommandPipelineBehavior<,>));
         });
 
         services.AddValidatorsFromAssembly(ApplicationAssemblyReference.Assembly);

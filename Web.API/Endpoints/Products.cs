@@ -46,8 +46,23 @@ public class Products : ICarterModule
             }
         }).WithName("GetProduct");
 
-        app.MapPost("products", async (CreateProductCommand command, ISender sender) =>
+        app.MapPost("products", async (
+            CreateProductRequest request,
+            [FromHeader(Name = "X-Idempotency-Key")] string requestId,
+            ISender sender) =>
         {
+            if (!Guid.TryParse(requestId, out Guid parsedRequestId))
+            {
+                return Results.BadRequest();
+            }
+
+            var command = new CreateProductCommand(
+                parsedRequestId,
+                request.Name,
+                request.Sku,
+                request.Currency,
+                request.Amount);
+
             await sender.Send(command);
 
             return Results.Ok();
