@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Persistence;
 using Rebus.Config;
 using Rebus.Routing.TypeBased;
+using System.Threading.RateLimiting;
 using Web.API.Extensions;
 using Web.API.Services;
 
@@ -25,30 +26,39 @@ builder.Services.AddRateLimiter(rateLimiterOptions =>
 {
     rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-    rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
-    {
-        options.Window = TimeSpan.FromSeconds(10);
-        options.PermitLimit = 3;
-    });
+    rateLimiterOptions.AddPolicy("fixed", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.Identity?.Name?.ToString(),
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 10,
+                Window = TimeSpan.FromSeconds(10)
+            }));
 
-    rateLimiterOptions.AddSlidingWindowLimiter("sliding", options =>
-    {
-        options.Window = TimeSpan.FromSeconds(15);
-        options.SegmentsPerWindow = 3;
-        options.PermitLimit = 15;
-    });
+    //rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
+    //{
+    //    options.Window = TimeSpan.FromSeconds(10);
+    //    options.PermitLimit = 3;
+    //});
 
-    rateLimiterOptions.AddTokenBucketLimiter("token", options =>
-    {
-        options.TokenLimit = 100;
-        options.ReplenishmentPeriod = TimeSpan.FromSeconds(5);
-        options.TokensPerPeriod = 10;
-    });
+    //rateLimiterOptions.AddSlidingWindowLimiter("sliding", options =>
+    //{
+    //    options.Window = TimeSpan.FromSeconds(15);
+    //    options.SegmentsPerWindow = 3;
+    //    options.PermitLimit = 15;
+    //});
 
-    rateLimiterOptions.AddConcurrencyLimiter("concurrency", options =>
-    {
-        options.PermitLimit = 5;
-    });
+    //rateLimiterOptions.AddTokenBucketLimiter("token", options =>
+    //{
+    //    options.TokenLimit = 100;
+    //    options.ReplenishmentPeriod = TimeSpan.FromSeconds(5);
+    //    options.TokensPerPeriod = 10;
+    //});
+
+    //rateLimiterOptions.AddConcurrencyLimiter("concurrency", options =>
+    //{
+    //    options.PermitLimit = 5;
+    //});
 });
 
 builder.Services.AddRebus(rebus => rebus
