@@ -2,8 +2,8 @@ using Application;
 using Application.Abstractions;
 using Application.Orders.Create;
 using Carter;
-using Microsoft.AspNetCore.RateLimiting;
 using Persistence;
+using Infrastructure;
 using Rebus.Config;
 using Rebus.Routing.TypeBased;
 using System.Threading.RateLimiting;
@@ -15,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddInfrastructure();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddCarter();
