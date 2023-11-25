@@ -18,6 +18,8 @@ public static class DepedencyInjection
             config.AddOpenBehavior(typeof(UnitOfWorkBehavior<,>));
 
             config.AddOpenBehavior(typeof(IdempotentCommandPipelineBehavior<,>));
+
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         services.AddValidatorsFromAssembly(ApplicationAssemblyReference.Assembly);
