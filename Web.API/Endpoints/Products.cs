@@ -57,7 +57,6 @@ public class Products : ICarterModule
             }
 
             var command = new CreateProductCommand(
-                parsedRequestId,
                 request.Name,
                 request.Sku,
                 request.Currency,
