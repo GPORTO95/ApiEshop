@@ -4,7 +4,7 @@ using Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Application.Data;
+namespace Application.Abstractions.Data;
 
 public interface IApplicationDbContext
 {

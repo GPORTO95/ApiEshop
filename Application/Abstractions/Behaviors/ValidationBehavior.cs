@@ -3,7 +3,7 @@ using Application.Exceptions;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Behaviors;
+namespace Application.Abstractions.Behaviors;
 
 internal class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommandBase
@@ -36,7 +36,7 @@ internal class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
 
         if (errors.Any())
         {
-            throw new Exceptions.ValidationException(errors);   
+            throw new Exceptions.ValidationException(errors);
         }
 
         var response = await next();

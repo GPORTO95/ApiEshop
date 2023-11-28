@@ -1,4 +1,4 @@
-﻿using Application.Data;
+﻿using Application.Abstractions.Data;
 using Domain.Customers;
 using EntityFramework.Exceptions.Common;
 using MediatR;

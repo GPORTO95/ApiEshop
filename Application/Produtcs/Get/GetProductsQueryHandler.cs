@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions;
-using Application.Data;
+using Application.Abstractions.Data;
 using Application.Produtcs.GetById;
 using Domain.Products;
 using MediatR;

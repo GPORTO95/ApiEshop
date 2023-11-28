@@ -1,5 +1,5 @@
-﻿using Application.Abstractions.Idempotency;
-using Application.Data;
+﻿using Application.Abstractions.Data;
+using Application.Abstractions.Idempotency;
 using Application.Orders;
 using Application.Orders.Create;
 using Application.Orders.GetOrderSummary;
@@ -48,6 +48,8 @@ public static class DependencyInjection
         services.AddScoped<ICalculateOrderSummary, CalculateOrderSummary>();
 
         services.AddScoped<IIdempotencyService, IdempotencyService>();
+
+        services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
 
         return services;
     }

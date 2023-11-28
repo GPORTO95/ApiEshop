@@ -1,8 +1,8 @@
-﻿using Application.Data;
+﻿using Application.Abstractions.Data;
 using MediatR;
 using System.Transactions;
 
-namespace Application.Behaviors;
+namespace Application.Abstractions.Behaviors;
 
 public sealed class UnitOfWorkBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
