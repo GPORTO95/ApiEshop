@@ -1,5 +1,4 @@
-﻿using Application.Data;
-using Domain.Customers;
+﻿using Domain.Customers;
 using Domain.Orders;
 using MediatR;
 

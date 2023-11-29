@@ -51,27 +51,27 @@ internal sealed class GetProductQueryHandler
         return productResponse;
     }
 
-    public async Task<ProductResponse> HandleEfCore(GetProductQuery request, CancellationToken cancellationToken)
-    {
-        var product = await _context.Products
-            .Where(p => p.Id == request.ProductId)
-            .Select(p => new ProductResponse(
-                p.Id.Value,
-                p.Name,
-                p.Sku.Value,
-                p.Price.Currency,
-                p.Price.Amount))
-            .FirstOrDefaultAsync(cancellationToken);
+    //public async Task<ProductResponse> HandleEfCore(GetProductQuery request, CancellationToken cancellationToken)
+    //{
+    //    var product = await _context.Products
+    //        .Where(p => p.Id == request.ProductId)
+    //        .Select(p => new ProductResponse(
+    //            p.Id.Value,
+    //            p.Name,
+    //            p.Sku.Value,
+    //            p.Price.Currency,
+    //            p.Price.Amount))
+    //        .FirstOrDefaultAsync(cancellationToken);
 
-        if (product is null)
-        {
-            throw new ProductNotFoundException(request.ProductId);
-        }
+    //    if (product is null)
+    //    {
+    //        throw new ProductNotFoundException(request.ProductId);
+    //    }
 
-        AddLinksForProduct(product);
+    //    AddLinksForProduct(product);
 
-        return product;
-    }
+    //    return product;
+    //}
 
     private void AddLinksForProduct(ProductResponse productResponse)
     {

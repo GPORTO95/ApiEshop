@@ -44,7 +44,7 @@ public class Products : ICarterModule
 
                 return Results.BadRequest(e.Message);
             }
-        }).WithName("GetProduct");
+        }).WithName("GetProduct").RequireAuthorization();
 
         app.MapPost("products", async (
             CreateProductRequest request,

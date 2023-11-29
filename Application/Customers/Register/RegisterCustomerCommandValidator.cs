@@ -4,9 +4,9 @@ using FluentValidation;
 namespace Application.Customers.Create;
 
 
-public sealed class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCommand>
+public sealed class RegisterCustomerCommandValidator : AbstractValidator<RegisterCustomerCommand>
 {
-    public CreateCustomerCommandValidator(ICustomerRepository customerRepository)
+    public RegisterCustomerCommandValidator(ICustomerRepository customerRepository)
     {
         RuleFor(c => c.Email)
             .MustAsync(async (email, _) =>
