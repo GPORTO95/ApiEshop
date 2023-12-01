@@ -1,6 +1,8 @@
-﻿namespace Domain.Customers;
+﻿using Domain.Primitives;
 
-public class Customer
+namespace Domain.Customers;
+
+public class Customer : Entity<CustomerId>
 {
     public Customer(CustomerId id, string email, string name, string identityId)
     {

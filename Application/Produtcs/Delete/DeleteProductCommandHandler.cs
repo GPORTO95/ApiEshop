@@ -22,6 +22,6 @@ internal sealed class DeleteProductCommandHandler
             throw new ProductNotFoundException(request.Id);
         }
 
-        _productRepository.Delete(product);
+        _productRepository.Remove(product);
     }
 }

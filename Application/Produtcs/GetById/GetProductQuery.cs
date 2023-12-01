@@ -8,14 +8,13 @@ public record GetProductQuery(ProductId ProductId) : IRequest<ProductResponse>;
 
 public class ProductResponse
 {
-    public ProductResponse(Guid id, string name, string sku, string currency, decimal amount, List<Link> links)
+    public ProductResponse(Guid id, string name, string sku, string currency, decimal amount)
     {
         Id = id;
         Name = name;
         Sku = sku;
         Currency = currency;
         Amount = amount;
-        Links = links;
     }
 
     public Guid Id { get; init; }

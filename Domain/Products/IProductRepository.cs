@@ -8,5 +8,5 @@ public interface IProductRepository
 
     void Update(Product product);
 
-    void Delete(Product product);
+    void Remove(Product product);
 }

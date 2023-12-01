@@ -1,6 +1,8 @@
-﻿namespace Domain.Products;
+﻿using Domain.Primitives;
 
-public class Product
+namespace Domain.Products;
+
+public class Product : Entity<ProductId>
 {
     private Product()
     { }

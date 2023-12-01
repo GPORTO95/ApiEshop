@@ -2,6 +2,18 @@
 
 public class OrderResponse
 {
+    public OrderResponse()
+    {
+        
+    }
+
+    public OrderResponse(Guid id, Guid customerId, List<LineItemResponse> lineItems)
+    {
+        Id = id;
+        CustomerId = customerId;
+        LineItems = lineItems;
+    }
+
     public Guid Id { get; init; }
 
     public Guid CustomerId { get; init; }

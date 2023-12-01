@@ -4,7 +4,7 @@ using Domain.Products;
 
 namespace Domain.Orders;
 
-public class Order : Entity
+public class Order : Entity<OrderId>
 {
     private readonly HashSet<LineItem> _lineItems = new();
 
