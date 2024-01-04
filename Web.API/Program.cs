@@ -10,8 +10,12 @@ using System.Threading.RateLimiting;
 using Web.API.Extensions;
 using Web.API.Services;
 using Web.API.Middleware;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfig) =>
+    loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -93,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseSerilogRequestLogging();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
