@@ -7,6 +7,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Ardalis.ApiEndpoints" Version="4.1.0" />
+		<PackageReference Include="FastEndpoints" Version="5.19.2" />
 		<PackageReference Include="Carter" Version="7.0.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
 			<PrivateAssets>all</PrivateAssets>
